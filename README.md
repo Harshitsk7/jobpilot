@@ -47,7 +47,7 @@ Personal AI-powered job application assistant that scrapes LinkedIn & Naukri, sc
 ### 1. Clone the repository
 
 ```bash
-git clone https://github.com/harshees/jobpilot.git
+git clone https://github.com/Harshitsk7/jobpilot.git
 cd jobpilot
 ```
 
