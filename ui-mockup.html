@@ -1,0 +1,1362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JobPilot AI - UI Mockup</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+:root {
+  --bg: #0c0c0c;
+  --surface: #161616;
+  --surface-2: #1e1e1e;
+  --surface-3: #262626;
+  --border: #2a2a2a;
+  --border-subtle: #1f1f1f;
+  --text: #e8e8e8;
+  --text-secondary: #888;
+  --text-muted: #555;
+  --accent: #c4f042;
+  --accent-dim: #a8cc38;
+  --accent-glow: rgba(196, 240, 66, 0.08);
+  --accent-glow-strong: rgba(196, 240, 66, 0.15);
+  --orange: #ff8a3d;
+  --cyan: #42d4f0;
+  --rose: #f0426e;
+  --violet: #a78bfa;
+  --font: 'Space Grotesk', -apple-system, sans-serif;
+  --mono: 'IBM Plex Mono', monospace;
+  --radius: 14px;
+  --radius-sm: 8px;
+}
+
+html { font-size: 15px; }
+body {
+  font-family: var(--font);
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ═══ TOP BAR ═══ */
+.topbar {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  height: 56px;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 28px;
+  background: rgba(12,12,12,0.8);
+  backdrop-filter: blur(20px) saturate(1.4);
+  border-bottom: 1px solid var(--border-subtle);
+}
+.topbar-left { display: flex; align-items: center; gap: 24px; }
+.logo {
+  display: flex; align-items: center; gap: 10px;
+  font-weight: 700; font-size: 1.05rem; letter-spacing: -0.02em;
+}
+.logo-mark {
+  width: 28px; height: 28px;
+  background: var(--accent);
+  border-radius: 7px;
+  display: grid; place-items: center;
+  color: #0c0c0c; font-weight: 800; font-size: 14px;
+  font-family: var(--mono);
+}
+.nav { display: flex; gap: 2px; }
+.nav a {
+  padding: 6px 14px; border-radius: 8px;
+  font-size: 0.85rem; font-weight: 500;
+  color: var(--text-secondary);
+  text-decoration: none;
+  transition: all 0.15s;
+}
+.nav a:hover { color: var(--text); background: var(--surface-2); }
+.nav a.active {
+  color: var(--accent);
+  background: var(--accent-glow);
+}
+.topbar-right { display: flex; align-items: center; gap: 16px; }
+.cmd-bar {
+  display: flex; align-items: center; gap: 8px;
+  padding: 5px 12px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font-size: 0.8rem; color: var(--text-muted);
+  cursor: pointer;
+}
+.cmd-bar kbd {
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  padding: 1px 5px;
+  background: var(--surface-3);
+  border-radius: 4px;
+  color: var(--text-secondary);
+}
+.avatar {
+  width: 30px; height: 30px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--accent), var(--cyan));
+  display: grid; place-items: center;
+  font-size: 0.75rem; font-weight: 700; color: #0c0c0c;
+}
+.notif-dot {
+  position: relative;
+  width: 32px; height: 32px;
+  display: grid; place-items: center;
+  border-radius: 8px; cursor: pointer;
+  color: var(--text-secondary);
+  transition: all 0.15s;
+}
+.notif-dot:hover { background: var(--surface-2); color: var(--text); }
+.notif-dot::after {
+  content: ''; position: absolute; top: 5px; right: 5px;
+  width: 7px; height: 7px;
+  background: var(--rose);
+  border-radius: 50%;
+  border: 2px solid var(--bg);
+}
+
+/* ═══ MAIN LAYOUT ═══ */
+.main { padding: 76px 28px 28px; max-width: 1440px; margin: 0 auto; }
+
+/* ═══ DASHBOARD PAGE ═══ */
+.page-header {
+  display: flex; justify-content: space-between; align-items: flex-end;
+  margin-bottom: 28px;
+}
+.page-title {
+  font-size: 1.6rem; font-weight: 700; letter-spacing: -0.03em;
+}
+.page-subtitle {
+  font-size: 0.85rem; color: var(--text-muted); margin-top: 4px;
+}
+.time-filter {
+  display: flex; gap: 2px;
+  background: var(--surface);
+  border-radius: var(--radius-sm);
+  padding: 3px;
+  border: 1px solid var(--border-subtle);
+}
+.time-filter button {
+  padding: 5px 12px;
+  border: none;
+  border-radius: 6px;
+  font-family: var(--font);
+  font-size: 0.78rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+  background: transparent;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.time-filter button:hover { color: var(--text); }
+.time-filter button.active {
+  background: var(--surface-3);
+  color: var(--text);
+}
+
+/* ═══ BENTO GRID ═══ */
+.bento {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 16px;
+}
+.cell {
+  background: var(--surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius);
+  padding: 22px;
+  position: relative;
+  overflow: hidden;
+  transition: border-color 0.2s;
+}
+.cell:hover { border-color: var(--border); }
+
+/* Featured stat */
+.cell-hero {
+  grid-column: span 3;
+  background: linear-gradient(145deg, var(--surface), var(--accent-glow));
+  border-color: rgba(196,240,66,0.12);
+}
+.cell-hero:hover { border-color: rgba(196,240,66,0.25); }
+.cell-hero .stat-value {
+  font-size: 3.2rem;
+  font-weight: 700;
+  font-family: var(--mono);
+  letter-spacing: -0.04em;
+  line-height: 1;
+  color: var(--accent);
+}
+.cell-hero .stat-label {
+  font-size: 0.78rem;
+  color: var(--text-secondary);
+  margin-top: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-weight: 500;
+}
+.cell-hero .stat-change {
+  display: inline-flex; align-items: center; gap: 4px;
+  margin-top: 14px;
+  padding: 3px 8px;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  font-family: var(--mono);
+}
+.stat-change.up { background: rgba(196,240,66,0.1); color: var(--accent); }
+.stat-change.down { background: rgba(240,66,110,0.1); color: var(--rose); }
+
+/* Small stats */
+.cell-stat { grid-column: span 3; }
+.cell-stat .stat-row {
+  display: flex; justify-content: space-between; align-items: flex-end;
+}
+.cell-stat .stat-value {
+  font-size: 2rem;
+  font-weight: 700;
+  font-family: var(--mono);
+  letter-spacing: -0.03em;
+  line-height: 1;
+}
+.cell-stat .stat-label {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-weight: 500;
+}
+.cell-stat .mini-chart {
+  display: flex; align-items: flex-end; gap: 3px; height: 32px;
+}
+.cell-stat .mini-bar {
+  width: 6px;
+  border-radius: 3px;
+  transition: height 0.3s;
+}
+
+/* Activity chart */
+.cell-chart { grid-column: span 8; min-height: 260px; }
+.chart-header {
+  display: flex; justify-content: space-between; align-items: center;
+  margin-bottom: 20px;
+}
+.chart-title {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.chart-area {
+  position: relative;
+  height: 180px;
+  display: flex;
+  align-items: flex-end;
+  gap: 8px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid var(--border-subtle);
+}
+.chart-bar-group {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+.chart-bar {
+  width: 100%;
+  max-width: 40px;
+  border-radius: 6px 6px 2px 2px;
+  transition: height 0.5s ease;
+  position: relative;
+}
+.chart-bar:hover { filter: brightness(1.2); }
+.chart-bar-label {
+  font-size: 0.68rem;
+  color: var(--text-muted);
+  font-family: var(--mono);
+}
+
+/* Pipeline / status */
+.cell-pipeline { grid-column: span 4; }
+.pipeline-item {
+  display: flex; align-items: center; gap: 12px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--border-subtle);
+}
+.pipeline-item:last-child { border: none; }
+.pip-dot {
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.pip-label {
+  flex: 1;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+}
+.pip-count {
+  font-family: var(--mono);
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+.pip-bar {
+  flex: 1;
+  height: 4px;
+  background: var(--surface-3);
+  border-radius: 2px;
+  overflow: hidden;
+}
+.pip-bar-fill { height: 100%; border-radius: 2px; }
+
+/* Recent activity */
+.cell-activity { grid-column: span 5; }
+.activity-item {
+  display: flex; gap: 12px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--border-subtle);
+}
+.activity-item:last-child { border: none; }
+.act-icon {
+  width: 32px; height: 32px;
+  border-radius: 8px;
+  display: grid; place-items: center;
+  flex-shrink: 0;
+  font-size: 0.8rem;
+}
+.act-text {
+  flex: 1;
+}
+.act-title {
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+.act-desc {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  margin-top: 2px;
+}
+.act-time {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  font-family: var(--mono);
+  white-space: nowrap;
+  align-self: flex-start;
+  margin-top: 2px;
+}
+
+/* Skill gaps */
+.cell-skills { grid-column: span 7; }
+.skill-row {
+  display: flex; align-items: center; gap: 14px;
+  padding: 8px 0;
+}
+.skill-name {
+  width: 140px;
+  font-size: 0.82rem;
+  font-weight: 500;
+  flex-shrink: 0;
+}
+.skill-bar-track {
+  flex: 1; height: 6px;
+  background: var(--surface-3);
+  border-radius: 3px;
+  overflow: hidden;
+}
+.skill-bar-fill { height: 100%; border-radius: 3px; }
+.skill-freq {
+  font-size: 0.75rem;
+  font-family: var(--mono);
+  color: var(--text-muted);
+  width: 80px;
+  text-align: right;
+}
+.skill-priority {
+  font-size: 0.68rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 2px 8px;
+  border-radius: 4px;
+  width: 60px;
+  text-align: center;
+}
+
+/* ═══ JOB SEARCH PAGE (page 2 mock) ═══ */
+.page-divider {
+  margin: 60px 0 40px;
+  border: none;
+  border-top: 1px dashed var(--border);
+  position: relative;
+}
+.page-divider::after {
+  content: 'JOB SEARCH VIEW';
+  position: absolute;
+  top: -10px; left: 50%;
+  transform: translateX(-50%);
+  background: var(--bg);
+  padding: 0 16px;
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  letter-spacing: 0.1em;
+  font-weight: 600;
+}
+
+.search-bar {
+  display: flex; gap: 10px;
+  margin-bottom: 24px;
+}
+.search-input {
+  flex: 1;
+  padding: 10px 16px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  font-family: var(--font);
+  font-size: 0.9rem;
+  color: var(--text);
+  outline: none;
+  transition: border-color 0.2s;
+}
+.search-input:focus { border-color: var(--accent); }
+.search-input::placeholder { color: var(--text-muted); }
+.filter-chip {
+  padding: 8px 16px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  font-family: var(--font);
+  font-size: 0.82rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all 0.15s;
+  display: flex; align-items: center; gap: 6px;
+}
+.filter-chip:hover { border-color: var(--text-muted); color: var(--text); }
+.filter-chip.active { border-color: var(--accent); color: var(--accent); background: var(--accent-glow); }
+
+.jobs-layout {
+  display: grid;
+  grid-template-columns: 1fr 420px;
+  gap: 20px;
+}
+
+.job-list { display: flex; flex-direction: column; gap: 8px; }
+
+.job-card {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 16px;
+  padding: 18px 20px;
+  background: var(--surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition: all 0.15s;
+  align-items: start;
+}
+.job-card:hover { border-color: var(--border); transform: translateX(2px); }
+.job-card.selected {
+  border-color: var(--accent);
+  background: var(--accent-glow);
+}
+
+.job-logo {
+  width: 44px; height: 44px;
+  border-radius: 10px;
+  background: var(--surface-3);
+  display: grid; place-items: center;
+  font-size: 1.1rem; font-weight: 700;
+  color: var(--text-secondary);
+}
+
+.job-info { min-width: 0; }
+.job-title {
+  font-size: 0.92rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.job-company {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  margin-top: 2px;
+}
+.job-meta {
+  display: flex; gap: 12px; margin-top: 8px;
+  flex-wrap: wrap;
+}
+.job-tag {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  display: flex; align-items: center; gap: 4px;
+}
+
+.job-right {
+  display: flex; flex-direction: column; align-items: flex-end; gap: 8px;
+}
+.match-score {
+  font-family: var(--mono);
+  font-weight: 700;
+  font-size: 1.1rem;
+  line-height: 1;
+}
+.match-label {
+  font-size: 0.65rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.platform-tag {
+  font-size: 0.68rem;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 4px;
+  letter-spacing: 0.03em;
+}
+
+/* Detail panel */
+.detail-panel {
+  background: var(--surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius);
+  padding: 24px;
+  position: sticky;
+  top: 76px;
+  max-height: calc(100vh - 96px);
+  overflow-y: auto;
+}
+.detail-header {
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--border-subtle);
+  margin-bottom: 20px;
+}
+.detail-title {
+  font-size: 1.15rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+.detail-company {
+  font-size: 0.88rem;
+  color: var(--text-secondary);
+  margin-top: 4px;
+}
+.detail-tags {
+  display: flex; gap: 8px; margin-top: 12px;
+  flex-wrap: wrap;
+}
+.detail-tag {
+  font-size: 0.72rem;
+  padding: 3px 10px;
+  border-radius: 6px;
+  background: var(--surface-3);
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+.detail-section {
+  margin-bottom: 20px;
+}
+.detail-section-title {
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-bottom: 10px;
+}
+.detail-summary {
+  font-size: 0.85rem;
+  line-height: 1.6;
+  color: var(--text-secondary);
+}
+.detail-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-top: 24px;
+}
+.btn {
+  padding: 10px 16px;
+  border-radius: 10px;
+  font-family: var(--font);
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s;
+  text-align: center;
+  border: none;
+}
+.btn-accent {
+  background: var(--accent);
+  color: #0c0c0c;
+  grid-column: span 2;
+}
+.btn-accent:hover { background: var(--accent-dim); }
+.btn-outline {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--text-secondary);
+}
+.btn-outline:hover { border-color: var(--text-muted); color: var(--text); }
+
+.score-ring-inline {
+  width: 48px; height: 48px;
+  border-radius: 50%;
+  display: grid; place-items: center;
+  font-family: var(--mono);
+  font-weight: 700;
+  font-size: 0.85rem;
+  position: relative;
+}
+.score-ring-inline::before {
+  content: '';
+  position: absolute; inset: 0;
+  border-radius: 50%;
+  border: 3px solid var(--surface-3);
+}
+.score-ring-inline::after {
+  content: '';
+  position: absolute; inset: 0;
+  border-radius: 50%;
+  border: 3px solid transparent;
+}
+
+/* ═══ ATS PAGE MOCK ═══ */
+.page-divider.ats::after { content: 'ATS SCORE VIEW'; }
+
+.ats-layout {
+  display: grid;
+  grid-template-columns: 300px 1fr;
+  gap: 20px;
+}
+.ats-sidebar {
+  display: flex; flex-direction: column; gap: 16px;
+}
+.ats-score-card {
+  background: var(--surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius);
+  padding: 28px;
+  text-align: center;
+}
+.ats-big-score {
+  font-size: 4rem;
+  font-weight: 800;
+  font-family: var(--mono);
+  line-height: 1;
+  letter-spacing: -0.06em;
+}
+.ats-score-sub {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  margin-top: 6px;
+}
+.ats-ring {
+  width: 160px; height: 160px;
+  margin: 0 auto 16px;
+  position: relative;
+}
+.ats-ring svg { width: 100%; height: 100%; transform: rotate(-90deg); }
+.ats-ring circle {
+  fill: none;
+  stroke-width: 8;
+  stroke-linecap: round;
+}
+.ats-ring .track { stroke: var(--surface-3); }
+.ats-ring .fill { transition: stroke-dashoffset 1s ease; }
+.ats-ring .score-text {
+  position: absolute;
+  inset: 0;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+}
+
+.ats-section-scores {
+  background: var(--surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius);
+  padding: 20px;
+}
+.ats-section-row {
+  display: flex; align-items: center; gap: 12px;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--border-subtle);
+}
+.ats-section-row:last-child { border: none; }
+.ats-sec-name {
+  width: 100px;
+  font-size: 0.78rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+}
+.ats-sec-bar {
+  flex: 1; height: 5px;
+  background: var(--surface-3);
+  border-radius: 3px;
+  overflow: hidden;
+}
+.ats-sec-bar-fill { height: 100%; border-radius: 3px; }
+.ats-sec-score {
+  font-size: 0.75rem;
+  font-family: var(--mono);
+  font-weight: 600;
+  width: 40px;
+  text-align: right;
+}
+
+.ats-main {
+  display: flex; flex-direction: column; gap: 16px;
+}
+.ats-tabs {
+  display: flex; gap: 2px;
+  background: var(--surface);
+  border-radius: 10px;
+  padding: 3px;
+  border: 1px solid var(--border-subtle);
+  width: fit-content;
+}
+.ats-tab {
+  padding: 7px 18px;
+  border-radius: 8px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: all 0.15s;
+  border: none;
+  background: transparent;
+  font-family: var(--font);
+}
+.ats-tab:hover { color: var(--text-secondary); }
+.ats-tab.active { background: var(--surface-3); color: var(--text); }
+
+.ats-content {
+  background: var(--surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius);
+  padding: 24px;
+}
+.keyword-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+.keyword-section h4 {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 12px;
+}
+.keyword-tags {
+  display: flex; flex-wrap: wrap; gap: 6px;
+}
+.kw-tag {
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 0.78rem;
+  font-weight: 500;
+}
+.kw-found { background: rgba(196,240,66,0.1); color: var(--accent); }
+.kw-missing { background: rgba(240,66,110,0.08); color: var(--rose); border: 1px dashed rgba(240,66,110,0.2); }
+
+/* ═══ UTILITY ═══ */
+.glow-accent {
+  position: absolute; top: -40px; right: -40px;
+  width: 120px; height: 120px;
+  background: radial-gradient(circle, var(--accent-glow-strong), transparent 70%);
+  pointer-events: none;
+}
+
+.fade-overlay {
+  position: absolute; bottom: 0; left: 0; right: 0;
+  height: 40px;
+  background: linear-gradient(transparent, var(--surface));
+  pointer-events: none;
+}
+
+/* scrollbar */
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }
+
+/* tooltip for match */
+.match-tooltip {
+  position: relative;
+}
+.match-tooltip::after {
+  content: attr(data-tip);
+  position: absolute;
+  bottom: calc(100% + 6px);
+  right: 0;
+  padding: 4px 8px;
+  background: var(--surface-3);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  font-size: 0.7rem;
+  color: var(--text-secondary);
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.15s;
+}
+.match-tooltip:hover::after { opacity: 1; }
+</style>
+</head>
+<body>
+
+<!-- ═══════════ TOP BAR ═══════════ -->
+<div class="topbar">
+  <div class="topbar-left">
+    <div class="logo">
+      <div class="logo-mark">JP</div>
+      <span>JobPilot</span>
+    </div>
+    <nav class="nav">
+      <a href="#" class="active">Dashboard</a>
+      <a href="#">Jobs</a>
+      <a href="#">Applications</a>
+      <a href="#">Resume</a>
+      <a href="#">ATS</a>
+      <a href="#">Settings</a>
+    </nav>
+  </div>
+  <div class="topbar-right">
+    <div class="cmd-bar">
+      <span>Search anything...</span>
+      <kbd>/</kbd>
+    </div>
+    <div class="notif-dot">
+      <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+    </div>
+    <div class="avatar">LD</div>
+  </div>
+</div>
+
+<!-- ═══════════ DASHBOARD ═══════════ -->
+<div class="main">
+  <div class="page-header">
+    <div>
+      <div class="page-title">Dashboard</div>
+      <div class="page-subtitle">May 27, 2026</div>
+    </div>
+    <div class="time-filter">
+      <button>24h</button>
+      <button class="active">7d</button>
+      <button>30d</button>
+      <button>All</button>
+    </div>
+  </div>
+
+  <div class="bento">
+    <!-- Hero stat -->
+    <div class="cell cell-hero">
+      <div class="glow-accent"></div>
+      <div class="stat-label">Total Jobs Tracked</div>
+      <div class="stat-value">247</div>
+      <div class="stat-change up">+34 this week</div>
+    </div>
+
+    <!-- Small stats -->
+    <div class="cell cell-stat">
+      <div class="stat-label">Applied</div>
+      <div class="stat-row">
+        <div class="stat-value">42</div>
+        <div class="mini-chart">
+          <div class="mini-bar" style="height:40%;background:var(--accent)"></div>
+          <div class="mini-bar" style="height:25%;background:var(--accent)"></div>
+          <div class="mini-bar" style="height:55%;background:var(--accent)"></div>
+          <div class="mini-bar" style="height:30%;background:var(--accent)"></div>
+          <div class="mini-bar" style="height:70%;background:var(--accent)"></div>
+          <div class="mini-bar" style="height:45%;background:var(--accent)"></div>
+          <div class="mini-bar" style="height:85%;background:var(--accent)"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="cell cell-stat">
+      <div class="stat-label">Interviews</div>
+      <div class="stat-row">
+        <div class="stat-value" style="color:var(--cyan)">7</div>
+        <div class="mini-chart">
+          <div class="mini-bar" style="height:20%;background:var(--cyan)"></div>
+          <div class="mini-bar" style="height:15%;background:var(--cyan)"></div>
+          <div class="mini-bar" style="height:40%;background:var(--cyan)"></div>
+          <div class="mini-bar" style="height:30%;background:var(--cyan)"></div>
+          <div class="mini-bar" style="height:60%;background:var(--cyan)"></div>
+          <div class="mini-bar" style="height:80%;background:var(--cyan)"></div>
+          <div class="mini-bar" style="height:65%;background:var(--cyan)"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="cell cell-stat">
+      <div class="stat-label">Avg Match Score</div>
+      <div class="stat-row">
+        <div class="stat-value" style="color:var(--orange)">73<span style="font-size:1rem;color:var(--text-muted)">%</span></div>
+        <div class="stat-change up">+5% vs last week</div>
+      </div>
+    </div>
+
+    <!-- Activity chart -->
+    <div class="cell cell-chart">
+      <div class="chart-header">
+        <div class="chart-title">Application Activity</div>
+        <div style="display:flex;gap:16px;font-size:0.75rem;">
+          <span style="display:flex;align-items:center;gap:5px;">
+            <span style="width:8px;height:8px;border-radius:2px;background:var(--accent)"></span>
+            <span style="color:var(--text-muted)">Applied</span>
+          </span>
+          <span style="display:flex;align-items:center;gap:5px;">
+            <span style="width:8px;height:8px;border-radius:2px;background:var(--cyan)"></span>
+            <span style="color:var(--text-muted)">Interviews</span>
+          </span>
+        </div>
+      </div>
+      <div class="chart-area">
+        <div class="chart-bar-group">
+          <div class="chart-bar" style="height:45%;background:var(--accent);opacity:0.85"></div>
+          <div class="chart-bar-label">Mon</div>
+        </div>
+        <div class="chart-bar-group">
+          <div class="chart-bar" style="height:70%;background:var(--accent);opacity:0.85"></div>
+          <div class="chart-bar-label">Tue</div>
+        </div>
+        <div class="chart-bar-group">
+          <div class="chart-bar" style="height:35%;background:var(--accent);opacity:0.85"></div>
+          <div class="chart-bar-label">Wed</div>
+        </div>
+        <div class="chart-bar-group">
+          <div style="display:flex;gap:4px;align-items:flex-end;width:100%;justify-content:center">
+            <div class="chart-bar" style="height:90px;background:var(--accent);opacity:0.85;width:18px"></div>
+            <div class="chart-bar" style="height:40px;background:var(--cyan);opacity:0.7;width:18px"></div>
+          </div>
+          <div class="chart-bar-label">Thu</div>
+        </div>
+        <div class="chart-bar-group">
+          <div style="display:flex;gap:4px;align-items:flex-end;width:100%;justify-content:center">
+            <div class="chart-bar" style="height:60px;background:var(--accent);opacity:0.85;width:18px"></div>
+            <div class="chart-bar" style="height:30px;background:var(--cyan);opacity:0.7;width:18px"></div>
+          </div>
+          <div class="chart-bar-label">Fri</div>
+        </div>
+        <div class="chart-bar-group">
+          <div class="chart-bar" style="height:25%;background:var(--accent);opacity:0.85"></div>
+          <div class="chart-bar-label">Sat</div>
+        </div>
+        <div class="chart-bar-group">
+          <div style="display:flex;gap:4px;align-items:flex-end;width:100%;justify-content:center">
+            <div class="chart-bar" style="height:110px;background:var(--accent);opacity:0.85;width:18px"></div>
+            <div class="chart-bar" style="height:55px;background:var(--cyan);opacity:0.7;width:18px"></div>
+          </div>
+          <div class="chart-bar-label">Sun</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Pipeline -->
+    <div class="cell cell-pipeline">
+      <div class="chart-title" style="margin-bottom:16px">Pipeline</div>
+      <div class="pipeline-item">
+        <div class="pip-dot" style="background:var(--text-muted)"></div>
+        <div class="pip-label">Not Applied</div>
+        <div class="pip-bar"><div class="pip-bar-fill" style="width:75%;background:var(--text-muted)"></div></div>
+        <div class="pip-count">186</div>
+      </div>
+      <div class="pipeline-item">
+        <div class="pip-dot" style="background:var(--orange)"></div>
+        <div class="pip-label">Reviewing</div>
+        <div class="pip-bar"><div class="pip-bar-fill" style="width:15%;background:var(--orange)"></div></div>
+        <div class="pip-count">12</div>
+      </div>
+      <div class="pipeline-item">
+        <div class="pip-dot" style="background:var(--accent)"></div>
+        <div class="pip-label">Applied</div>
+        <div class="pip-bar"><div class="pip-bar-fill" style="width:38%;background:var(--accent)"></div></div>
+        <div class="pip-count">42</div>
+      </div>
+      <div class="pipeline-item">
+        <div class="pip-dot" style="background:var(--cyan)"></div>
+        <div class="pip-label">Interview</div>
+        <div class="pip-bar"><div class="pip-bar-fill" style="width:8%;background:var(--cyan)"></div></div>
+        <div class="pip-count">7</div>
+      </div>
+      <div class="pipeline-item">
+        <div class="pip-dot" style="background:var(--rose)"></div>
+        <div class="pip-label">Rejected</div>
+        <div class="pip-bar"><div class="pip-bar-fill" style="width:5%;background:var(--rose)"></div></div>
+        <div class="pip-count">5</div>
+      </div>
+    </div>
+
+    <!-- Recent Activity -->
+    <div class="cell cell-activity">
+      <div class="chart-title" style="margin-bottom:12px">Recent Activity</div>
+      <div class="activity-item">
+        <div class="act-icon" style="background:rgba(196,240,66,0.1);color:var(--accent)">&#10003;</div>
+        <div class="act-text">
+          <div class="act-title">Applied to Senior Frontend Engineer</div>
+          <div class="act-desc">Google - Bangalore, India</div>
+        </div>
+        <div class="act-time">2m ago</div>
+      </div>
+      <div class="activity-item">
+        <div class="act-icon" style="background:rgba(66,212,240,0.1);color:var(--cyan)">&#9733;</div>
+        <div class="act-text">
+          <div class="act-title">Resume tailored for Product Manager</div>
+          <div class="act-desc">Microsoft - Hyderabad</div>
+        </div>
+        <div class="act-time">18m ago</div>
+      </div>
+      <div class="activity-item">
+        <div class="act-icon" style="background:rgba(255,138,61,0.1);color:var(--orange)">&#9889;</div>
+        <div class="act-text">
+          <div class="act-title">AI analysis complete - 12 new jobs</div>
+          <div class="act-desc">Match scores generated</div>
+        </div>
+        <div class="act-time">1h ago</div>
+      </div>
+      <div class="activity-item">
+        <div class="act-icon" style="background:rgba(167,139,250,0.1);color:var(--violet)">&#8593;</div>
+        <div class="act-text">
+          <div class="act-title">ATS score improved to 87</div>
+          <div class="act-desc">Base resume enhanced</div>
+        </div>
+        <div class="act-time">3h ago</div>
+      </div>
+      <div style="position:relative">
+        <div class="fade-overlay"></div>
+      </div>
+    </div>
+
+    <!-- Skill Gaps -->
+    <div class="cell cell-skills">
+      <div class="chart-title" style="margin-bottom:16px">Skill Gaps</div>
+      <div class="skill-row">
+        <div class="skill-name">System Design</div>
+        <div class="skill-bar-track"><div class="skill-bar-fill" style="width:90%;background:var(--rose)"></div></div>
+        <div class="skill-freq">18/20 jobs</div>
+        <div class="skill-priority" style="background:rgba(240,66,110,0.1);color:var(--rose)">High</div>
+      </div>
+      <div class="skill-row">
+        <div class="skill-name">Kubernetes</div>
+        <div class="skill-bar-track"><div class="skill-bar-fill" style="width:70%;background:var(--orange)"></div></div>
+        <div class="skill-freq">14/20 jobs</div>
+        <div class="skill-priority" style="background:rgba(255,138,61,0.1);color:var(--orange)">High</div>
+      </div>
+      <div class="skill-row">
+        <div class="skill-name">GraphQL</div>
+        <div class="skill-bar-track"><div class="skill-bar-fill" style="width:55%;background:var(--orange)"></div></div>
+        <div class="skill-freq">11/20 jobs</div>
+        <div class="skill-priority" style="background:rgba(255,138,61,0.1);color:var(--orange)">Med</div>
+      </div>
+      <div class="skill-row">
+        <div class="skill-name">Terraform</div>
+        <div class="skill-bar-track"><div class="skill-bar-fill" style="width:40%;background:var(--cyan)"></div></div>
+        <div class="skill-freq">8/20 jobs</div>
+        <div class="skill-priority" style="background:rgba(66,212,240,0.1);color:var(--cyan)">Med</div>
+      </div>
+      <div class="skill-row">
+        <div class="skill-name">Rust</div>
+        <div class="skill-bar-track"><div class="skill-bar-fill" style="width:25%;background:var(--text-muted)"></div></div>
+        <div class="skill-freq">5/20 jobs</div>
+        <div class="skill-priority" style="background:var(--surface-3);color:var(--text-muted)">Low</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════ JOB SEARCH PAGE ═══════════ -->
+  <hr class="page-divider">
+
+  <div class="page-header">
+    <div>
+      <div class="page-title">Jobs</div>
+      <div class="page-subtitle">247 tracked &middot; 34 new this week</div>
+    </div>
+  </div>
+
+  <div class="search-bar">
+    <input class="search-input" placeholder="Search jobs, companies, skills..." />
+    <div class="filter-chip active">
+      <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M22 3H2l8 9.46V19l4 2v-8.54L22 3z"/></svg>
+      Filters
+    </div>
+    <div class="filter-chip">LinkedIn</div>
+    <div class="filter-chip">Naukri</div>
+    <div class="filter-chip">
+      <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>
+      Score 70%+
+    </div>
+  </div>
+
+  <div class="jobs-layout">
+    <div class="job-list">
+
+      <div class="job-card selected">
+        <div class="job-logo" style="background:linear-gradient(135deg,#1a73e8,#4285f4);color:#fff">G</div>
+        <div class="job-info">
+          <div class="job-title">Senior Frontend Engineer</div>
+          <div class="job-company">Google &middot; Bangalore, India</div>
+          <div class="job-meta">
+            <span class="job-tag">&#128188; Full-time</span>
+            <span class="job-tag">&#128176; 45-60 LPA</span>
+            <span class="job-tag">&#128197; 2d ago</span>
+          </div>
+        </div>
+        <div class="job-right">
+          <div class="match-tooltip" data-tip="Strong skills match">
+            <div class="match-score" style="color:var(--accent)">92%</div>
+            <div class="match-label">match</div>
+          </div>
+          <div class="platform-tag" style="background:rgba(10,102,194,0.15);color:#70b5f9">LinkedIn</div>
+        </div>
+      </div>
+
+      <div class="job-card">
+        <div class="job-logo" style="background:linear-gradient(135deg,#f25022,#ffb900);color:#fff">M</div>
+        <div class="job-info">
+          <div class="job-title">Product Manager - Azure DevOps</div>
+          <div class="job-company">Microsoft &middot; Hyderabad, India</div>
+          <div class="job-meta">
+            <span class="job-tag">&#128188; Full-time</span>
+            <span class="job-tag">&#128176; 50-70 LPA</span>
+            <span class="job-tag">&#128197; 1d ago</span>
+          </div>
+        </div>
+        <div class="job-right">
+          <div class="match-score" style="color:var(--cyan)">78%</div>
+          <div class="match-label">match</div>
+          <div class="platform-tag" style="background:rgba(74,144,217,0.15);color:#93c5fd">Naukri</div>
+        </div>
+      </div>
+
+      <div class="job-card">
+        <div class="job-logo" style="background:linear-gradient(135deg,#ff9900,#ff6600);color:#fff">A</div>
+        <div class="job-info">
+          <div class="job-title">SDE III - Payments Infrastructure</div>
+          <div class="job-company">Amazon &middot; Bangalore, India</div>
+          <div class="job-meta">
+            <span class="job-tag">&#128188; Full-time</span>
+            <span class="job-tag">&#128176; 55-75 LPA</span>
+            <span class="job-tag">&#128197; 4d ago</span>
+          </div>
+        </div>
+        <div class="job-right">
+          <div class="match-score" style="color:var(--orange)">65%</div>
+          <div class="match-label">match</div>
+          <div class="platform-tag" style="background:rgba(10,102,194,0.15);color:#70b5f9">LinkedIn</div>
+        </div>
+      </div>
+
+      <div class="job-card">
+        <div class="job-logo" style="background:linear-gradient(135deg,#5865f2,#7289da);color:#fff">D</div>
+        <div class="job-info">
+          <div class="job-title">Staff Engineer - Real-time Systems</div>
+          <div class="job-company">Discord &middot; Remote</div>
+          <div class="job-meta">
+            <span class="job-tag">&#128188; Full-time</span>
+            <span class="job-tag">&#127760; Remote</span>
+            <span class="job-tag">&#128197; 5d ago</span>
+          </div>
+        </div>
+        <div class="job-right">
+          <div class="match-score" style="color:var(--accent)">88%</div>
+          <div class="match-label">match</div>
+          <div class="platform-tag" style="background:rgba(10,102,194,0.15);color:#70b5f9">LinkedIn</div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Detail panel -->
+    <div class="detail-panel">
+      <div class="detail-header">
+        <div class="detail-title">Senior Frontend Engineer</div>
+        <div class="detail-company">Google &middot; Bangalore, India</div>
+        <div class="detail-tags">
+          <span class="detail-tag">React</span>
+          <span class="detail-tag">TypeScript</span>
+          <span class="detail-tag">Performance</span>
+          <span class="detail-tag">Full-time</span>
+        </div>
+      </div>
+
+      <div class="detail-section">
+        <div class="detail-section-title">AI Summary</div>
+        <div class="detail-summary">
+          Senior role focused on building high-performance web applications for Google Cloud Console.
+          Requires deep expertise in React, TypeScript, and web performance optimization.
+          Team of 8 engineers shipping to millions of enterprise users. Strong emphasis on accessibility and i18n.
+        </div>
+      </div>
+
+      <div class="detail-section">
+        <div class="detail-section-title">Match Breakdown</div>
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <div style="display:flex;align-items:center;gap:8px">
+            <span style="color:var(--accent);font-size:0.8rem">&#10003;</span>
+            <span style="font-size:0.82rem;color:var(--text-secondary)">5+ years React/TypeScript experience</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:8px">
+            <span style="color:var(--accent);font-size:0.8rem">&#10003;</span>
+            <span style="font-size:0.82rem;color:var(--text-secondary)">Performance optimization background</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:8px">
+            <span style="color:var(--accent);font-size:0.8rem">&#10003;</span>
+            <span style="font-size:0.82rem;color:var(--text-secondary)">Large-scale application experience</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:8px">
+            <span style="color:var(--orange);font-size:0.8rem">&#9679;</span>
+            <span style="font-size:0.82rem;color:var(--text-secondary)">Could strengthen accessibility portfolio</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="detail-section">
+        <div class="detail-section-title">Tailored Resume</div>
+        <div style="display:flex;align-items:center;gap:10px;padding:12px;background:var(--surface-3);border-radius:10px">
+          <span style="color:var(--accent);font-size:0.85rem">&#10003;</span>
+          <span style="font-size:0.82rem;">Ready &middot; v2 &middot; Score 92</span>
+          <span style="margin-left:auto;font-size:0.75rem;color:var(--text-muted)">2h ago</span>
+        </div>
+      </div>
+
+      <div class="detail-actions">
+        <button class="btn btn-accent">Apply Now</button>
+        <button class="btn btn-outline">Tailor Resume</button>
+        <button class="btn btn-outline">Cover Letter</button>
+        <button class="btn btn-outline">Interview Prep</button>
+        <button class="btn btn-outline">View Diff</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════ ATS SCORE PAGE ═══════════ -->
+  <hr class="page-divider ats">
+
+  <div class="page-header">
+    <div>
+      <div class="page-title">ATS Score</div>
+      <div class="page-subtitle">Resume optimization analysis</div>
+    </div>
+  </div>
+
+  <div class="ats-layout">
+    <div class="ats-sidebar">
+      <div class="ats-score-card">
+        <div class="ats-ring">
+          <svg viewBox="0 0 160 160">
+            <circle class="track" cx="80" cy="80" r="68" />
+            <circle class="fill" cx="80" cy="80" r="68"
+              stroke="var(--accent)"
+              stroke-dasharray="427"
+              stroke-dashoffset="55" />
+          </svg>
+          <div class="score-text">
+            <div class="ats-big-score" style="font-size:2.6rem">87</div>
+            <div class="ats-score-sub">out of 100</div>
+          </div>
+        </div>
+        <div style="font-size:0.82rem;color:var(--text-secondary);margin-top:8px">Your resume is <strong style="color:var(--accent)">well-optimized</strong> for ATS systems</div>
+      </div>
+
+      <div class="ats-section-scores">
+        <div class="chart-title" style="margin-bottom:12px">Section Scores</div>
+        <div class="ats-section-row">
+          <div class="ats-sec-name">Contact</div>
+          <div class="ats-sec-bar"><div class="ats-sec-bar-fill" style="width:100%;background:var(--accent)"></div></div>
+          <div class="ats-sec-score" style="color:var(--accent)">10/10</div>
+        </div>
+        <div class="ats-section-row">
+          <div class="ats-sec-name">Experience</div>
+          <div class="ats-sec-bar"><div class="ats-sec-bar-fill" style="width:85%;background:var(--accent)"></div></div>
+          <div class="ats-sec-score" style="color:var(--accent)">17/20</div>
+        </div>
+        <div class="ats-section-row">
+          <div class="ats-sec-name">Skills</div>
+          <div class="ats-sec-bar"><div class="ats-sec-bar-fill" style="width:80%;background:var(--orange)"></div></div>
+          <div class="ats-sec-score" style="color:var(--orange)">16/20</div>
+        </div>
+        <div class="ats-section-row">
+          <div class="ats-sec-name">Education</div>
+          <div class="ats-sec-bar"><div class="ats-sec-bar-fill" style="width:90%;background:var(--accent)"></div></div>
+          <div class="ats-sec-score" style="color:var(--accent)">9/10</div>
+        </div>
+        <div class="ats-section-row">
+          <div class="ats-sec-name">Format</div>
+          <div class="ats-sec-bar"><div class="ats-sec-bar-fill" style="width:75%;background:var(--orange)"></div></div>
+          <div class="ats-sec-score" style="color:var(--orange)">15/20</div>
+        </div>
+        <div class="ats-section-row">
+          <div class="ats-sec-name">Impact</div>
+          <div class="ats-sec-bar"><div class="ats-sec-bar-fill" style="width:80%;background:var(--accent)"></div></div>
+          <div class="ats-sec-score" style="color:var(--accent)">16/20</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="ats-main">
+      <div class="ats-tabs">
+        <button class="ats-tab active">Keywords</button>
+        <button class="ats-tab">Format</button>
+        <button class="ats-tab">Impact</button>
+        <button class="ats-tab">Visual</button>
+        <button class="ats-tab">Enhanced</button>
+      </div>
+
+      <div class="ats-content">
+        <div class="keyword-grid">
+          <div class="keyword-section">
+            <h4>Found Keywords (14)</h4>
+            <div class="keyword-tags">
+              <span class="kw-tag kw-found">React</span>
+              <span class="kw-tag kw-found">TypeScript</span>
+              <span class="kw-tag kw-found">JavaScript</span>
+              <span class="kw-tag kw-found">Node.js</span>
+              <span class="kw-tag kw-found">REST API</span>
+              <span class="kw-tag kw-found">Git</span>
+              <span class="kw-tag kw-found">CI/CD</span>
+              <span class="kw-tag kw-found">Agile</span>
+              <span class="kw-tag kw-found">Testing</span>
+              <span class="kw-tag kw-found">PostgreSQL</span>
+              <span class="kw-tag kw-found">Docker</span>
+              <span class="kw-tag kw-found">AWS</span>
+              <span class="kw-tag kw-found">Performance</span>
+              <span class="kw-tag kw-found">Accessibility</span>
+            </div>
+          </div>
+          <div class="keyword-section">
+            <h4>Missing Keywords (5)</h4>
+            <div class="keyword-tags">
+              <span class="kw-tag kw-missing">Kubernetes</span>
+              <span class="kw-tag kw-missing">GraphQL</span>
+              <span class="kw-tag kw-missing">System Design</span>
+              <span class="kw-tag kw-missing">Terraform</span>
+              <span class="kw-tag kw-missing">Observability</span>
+            </div>
+            <div style="margin-top:16px;padding:12px;background:var(--surface-3);border-radius:10px;font-size:0.8rem;color:var(--text-secondary)">
+              <strong style="color:var(--text)">Density:</strong> 73% keyword coverage
+              <div style="margin-top:6px;height:4px;background:var(--surface);border-radius:2px;overflow:hidden">
+                <div style="width:73%;height:100%;background:var(--accent);border-radius:2px"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div style="height:60px"></div>
+</div>
+
+</body>
+</html>

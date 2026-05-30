@@ -1,0 +1,162 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model UserProfile {
+  id                 String   @id @default("default")
+  fullName           String   @default("")
+  email              String   @default("")
+  phone              String   @default("")
+  linkedinUrl        String   @default("")
+  githubUrl          String   @default("")
+  portfolioUrl       String   @default("")
+  currentLocation    String   @default("")
+  willingToRelocate  Boolean  @default(false)
+  yearsExperience    Int      @default(0)
+  currentRole        String   @default("")
+  currentCompany     String   @default("")
+  education          String   @default("") // JSON string
+  skills             String   @default("") // comma-separated or JSON
+  preferredSalaryMin Int?
+  preferredSalaryMax Int?
+  preferredJobTypes  String   @default("") // remote,hybrid,onsite
+  preferredLocations String   @default("")
+  aiEnabled          Boolean  @default(true)
+  aiProvider         String   @default("")  // anthropic | openai | gemini | copilot | "" (use .env)
+  aiApiKey           String   @default("")  // encrypted API key for selected provider
+  aiModel            String   @default("")  // model override
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+}
+
+model PlatformCredential {
+  id           String   @id @default(uuid())
+  platform     String   @unique // linkedin | naukri
+  encryptedData String  // AES-256 encrypted JSON {username, password}
+  sessionData  String?  // encrypted cookies/session
+  status       String   @default("disconnected") // connected | disconnected | error
+  lastTestedAt DateTime?
+  lastError    String?
+  updatedAt    DateTime @updatedAt
+}
+
+model BaseResume {
+  id          String   @id @default("default")
+  fileName    String
+  mimeType    String
+  contentText String   // extracted text
+  filePath    String   // local path to original
+  label       String   @default("Primary")
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Job {
+  id              String   @id @default(uuid())
+  externalId      String?
+  platform        String   // linkedin | naukri
+  title           String
+  company         String
+  companyLogo     String?
+  location        String?
+  salary          String?
+  jobType         String?  // remote | hybrid | onsite
+  experienceLevel String?
+  applyType       String?  // easy_apply | external | unknown
+  postedDate      DateTime?
+  url             String
+  description     String   @default("")
+  aiSummary       String?
+  matchScore      Int?
+  matchRationale  String?  // JSON array of bullets
+  status          String   @default("not_applied") // not_applied | reviewing | applied | rejected | interview
+  isBookmarked    Boolean  @default(false)
+  dedupeKey       String   // title+company normalized
+  searchQueryId   String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  applications Application[]
+  tailoredResume TailoredResume?
+  coverLetter    CoverLetter?
+
+  @@index([dedupeKey])
+  @@index([platform])
+  @@index([status])
+  @@index([matchScore])
+}
+
+model TailoredResume {
+  id           String   @id @default(uuid())
+  jobId        String   @unique
+  job          Job      @relation(fields: [jobId], references: [id], onDelete: Cascade)
+  contentText  String
+  customFilePath String?
+  version      Int      @default(1)
+  aiProcessing Boolean  @default(false)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model CoverLetter {
+  id        String   @id @default(uuid())
+  jobId     String   @unique
+  job       Job      @relation(fields: [jobId], references: [id], onDelete: Cascade)
+  content   String
+  createdAt DateTime @default(now())
+}
+
+model Application {
+  id           String   @id @default(uuid())
+  jobId        String
+  job          Job      @relation(fields: [jobId], references: [id], onDelete: Cascade)
+  platform     String
+  status       String   // success | failed | manual | skipped
+  resumeUsed   String?
+  errorMessage String?
+  appliedAt    DateTime @default(now())
+
+  @@index([jobId])
+}
+
+model ActivityLog {
+  id        String   @id @default(uuid())
+  type      String   // fetch | apply | resume | error | connection
+  message   String
+  details   String?  // JSON
+  jobId     String?
+  createdAt DateTime @default(now())
+
+  @@index([createdAt])
+}
+
+model Notification {
+  id        String   @id @default(uuid())
+  title     String
+  message   String
+  type      String   // info | success | warning | error
+  read      Boolean  @default(false)
+  jobId     String?
+  createdAt DateTime @default(now())
+}
+
+model SearchQuery {
+  id              String   @id @default(uuid())
+  title           String
+  keywords        String?
+  location        String?
+  experienceLevel String?
+  salaryMin       Int?
+  salaryMax       Int?
+  jobType         String?
+  datePosted      String?  // 24h | week | month
+  platforms       String   @default("linkedin,naukri")
+  createdAt       DateTime @default(now())
+}
+

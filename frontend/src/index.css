@@ -1,0 +1,43 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * {
+    @apply border-jp-border;
+  }
+  ::-webkit-scrollbar {
+    width: 5px;
+    height: 5px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    @apply bg-jp-border rounded-full;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-jp-text-muted;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply px-4 py-2 bg-jp-accent hover:bg-jp-accent-dim text-jp-bg rounded-jp-sm font-semibold text-sm transition-all disabled:opacity-50;
+  }
+  .btn-secondary {
+    @apply px-4 py-2 bg-transparent border border-jp-border hover:border-jp-text-muted text-jp-text-secondary hover:text-jp-text rounded-jp-sm text-sm font-medium transition-all disabled:opacity-50;
+  }
+  .card {
+    @apply bg-jp-surface border border-jp-border-subtle rounded-jp p-5 transition-colors hover:border-jp-border;
+  }
+  .input {
+    @apply w-full px-3 py-2 bg-jp-bg border border-jp-border rounded-jp-sm text-jp-text placeholder-jp-text-muted focus:outline-none focus:border-jp-accent transition-colors text-sm;
+  }
+  .badge {
+    @apply px-2 py-0.5 text-xs font-medium rounded-full;
+  }
+  .section-title {
+    @apply text-xs font-semibold text-jp-text-muted uppercase tracking-widest;
+  }
+}

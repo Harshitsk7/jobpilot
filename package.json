@@ -1,0 +1,19 @@
+{
+  "name": "jobpilot",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Personal AI job application assistant — LinkedIn & Naukri",
+  "workspaces": [
+    "backend",
+    "frontend"
+  ],
+  "scripts": {
+    "dev": "concurrently \"npm run dev -w backend\" \"npm run dev -w frontend\"",
+    "build": "npm run build -w backend && npm run build -w frontend",
+    "db:push": "npm run db:push -w backend",
+    "db:studio": "npm run db:studio -w backend"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.2"
+  }
+}

@@ -1,0 +1,17 @@
+services:
+  jobpilot:
+    build: .
+    image: jobpilot:latest
+    container_name: jobpilot
+    ports:
+      - "3001:3001"
+    env_file:
+      - backend/.env
+    volumes:
+      - jobpilot-data:/app/backend/data
+      - jobpilot-db:/app/backend/prisma
+    restart: unless-stopped
+
+volumes:
+  jobpilot-data:
+  jobpilot-db:
