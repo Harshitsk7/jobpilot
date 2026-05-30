@@ -34,7 +34,7 @@ RUN npx playwright@1.50.1 install --with-deps chromium && rm -rf /tmp/*
 WORKDIR /app
 
 # Copy package files and install prod deps only
-COPY package.json ./
+COPY package.json package-lock.json* ./
 COPY backend/package.json backend/
 RUN npm ci --workspace=backend --omit=dev && npm cache clean --force
 
