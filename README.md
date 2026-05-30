@@ -157,12 +157,22 @@ docker run -d \
   jobpilot
 ```
 
-### Option C: Pull from Docker Hub
+### Option C: Pull from Docker Hub (no clone needed)
 
 ```bash
 docker pull harshees/jobpilot:latest
 
-# Create .env with your config (see backend/.env.example for reference)
+# Create a .env file with your config
+cat > .env <<EOF
+DATABASE_URL="file:./dev.db"
+PORT=3001
+ENCRYPTION_SECRET=$(node -e "console.log(require('crypto').randomBytes(32).toString('hex'))")
+LLM_PROVIDER=anthropic
+ANTHROPIC_API_KEY=your_key_here
+PLAYWRIGHT_HEADLESS=true
+EOF
+
+# Run
 docker run -d \
   --name jobpilot \
   -p 3001:3001 \
@@ -170,13 +180,8 @@ docker run -d \
   -v jobpilot-db:/app/backend/prisma \
   --env-file .env \
   harshees/jobpilot:latest
-```
 
-### Push to Docker Hub
-
-```bash
-docker build -t harshees/jobpilot:latest .
-docker push harshees/jobpilot:latest
+# Open http://localhost:3001
 ```
 
 ### Docker notes
